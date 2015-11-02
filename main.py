@@ -34,7 +34,7 @@ def extract_torrents(data):
 def search(query):
     query += ' ' + settings.extra  # add the extra information
     query = filters.type_filtering(query.encode('utf-8'), '%20')  # check type filter and set-up filters.title
-    url_search = "%s/search/0/0/000/4/%s" % (settings.url, query.replace(' ', '%20'))  # change in each provider
+    url_search = "%s/search/0/0/100/2/%s" % (settings.url, query.replace(' ', '%20'))  # change in each provider
     provider.log.info(url_search)
     if browser.open(url_search):
         results = extract_torrents(browser.content)
@@ -52,7 +52,7 @@ def search_movie(info):
         else:
             query = common.IMDB_title(info['imdb_id'])  # Title + year
     else:  # Title en foreign language
-        query = common.translator(info['imdb_id'],settings.language)  # Just title
+        query = common.translator(info['imdb_id'],settings.language).title().decode('utf-8') + ' ' + str(info['year'])  # Just title
     return search(query)
 
 def search_episode(info):
